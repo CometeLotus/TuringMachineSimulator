@@ -289,24 +289,59 @@ def affichage_sur_terminal(entree, fichier):
         else:
             return "Accepted"
 
-if sys.argv[1] == "question1":
-    if len(sys.argv) == 4:
-        print(initialise_MT(sys.argv[2], sys.argv[3]))
+def afficher_aide():
+    print("Usage :")
+    print("  python Turingmachine.py [action] [options]")
+    print("\nActions :")
+    print("  Détails [entrée] [fichier] : Affiche les détails de la machine de Turing.")
+    print("  Graphique [entrée] [fichier] : Exécute la machine de Turing pas à pas avec une fenêtre graphique.")
+    print("  Terminal [entrée] [fichier] : Exécute la machine de Turing pas à pas dans le terminal.")
+    print("  LinkMachines [fichier1] [fichier2] : Lie deux machines de Turing.")
+    print("\nOptions :")
+    print("  [entrée] : Mot d'entrée pour la machine de Turing.")
+    print("  [fichier] : Chemin vers le fichier de description de la machine de Turing.")
+
+def main():
+    if len(sys.argv) < 2:
+        afficher_aide()
+        sys.exit(1)
+
+    action = sys.argv[1]
+
+    if action == "Détails":
+        if len(sys.argv) == 4:
+            entree = sys.argv[2]
+            fichier = sys.argv[3]
+            print(initialise_MT(entree, fichier))
+        else:
+            print("Erreur : Nombre d'arguments invalides pour Détails.")
+            afficher_aide()
+
+    elif action == "Terminal":
+        if len(sys.argv) == 4:
+            print(affichage_sur_terminal(sys.argv[2], sys.argv[3]))
+        else:
+            print("Erreur : Nombre d'arguments invalides pour Terminal.")
+            afficher_aide()
+
+    elif action == "Graphique":
+        if len(sys.argv) == 4:
+            fn = Fenetre(sys.argv[2], sys.argv[3])
+            fn.mainloop()
+        else:
+            print("Erreur : Nombre d'arguments invalides pour Graphique.")
+            afficher_aide()
+
+    elif action == "LinkMachines":
+        if len(sys.argv) == 4:
+            print(linker(sys.argv[2], sys.argv[3]))
+        else:
+            print("Erreur : Nombre d'arguments invalides pour LinkMachines.")
+            afficher_aide()
+    
     else:
-        print("ENTREE INVALIDE!")
-elif sys.argv[1] == "question4graphique":
-    if len(sys.argv) == 4:
-        fn = Fenetre(sys.argv[2], sys.argv[3])
-        fn.mainloop()
-    else:
-        print("ENTREE INVALIDE!")
-elif sys.argv[1] == "question4terminal":
-    if len(sys.argv) == 4:
-        print(affichage_sur_terminal(sys.argv[2], sys.argv[3]))
-    else:
-        print("ENTREE INVALIDE!")
-elif sys.argv[1] == "question6":
-    if len(sys.argv) == 4:
-        print(linker(sys.argv[2], sys.argv[3]))
-    else:
-        print("ENTREE INVALIDE!")
+        print("Erreur : Action non reconnue.")
+        afficher_aide()
+
+if __name__ == "__main__":
+    main()
